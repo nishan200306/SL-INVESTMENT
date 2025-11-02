@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sri Lanka Investment</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Teko:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* New Professional Theme */
+      --dark-blue: #0d1b2a;
+      --mid-blue: #1b263b;
+      --light-blue: #415a77;
+      --text-light: #e0e1dd;
+      --gold: #FFC107;
+      --border-color: rgba(128, 154, 186, 0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-light);
+      background-color: var(--dark-blue);
+      overflow-x: hidden;
+      min-height: 100%;
+      position: relative;
+    }
+
+    /* Animated Background */
+    #background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: var(--dark-blue);
+    }
+    
+    /* --- Main Layout & Screens --- */
+    .app {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .screen.active {
+      display: flex;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- Header --- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-family: 'Teko', sans-serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+    }
+    .flag {
+      font-size: 2.5rem;
+    }
+
+    /* --- Forms & Inputs --- */
+    .form-container {
+      background-color: var(--mid-blue);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .form-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--gold);
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .input-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: rgba(224, 225, 221, 0.7);
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--dark-blue);
+      color: var(--text-light);
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-group input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+    }
+    .btn {
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      background-color: var(--gold);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover { background-color: #ffca2c; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); }
+    .btn:active { transform: scale(0.98); }
+
+    .form-toggle {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .form-toggle .link {
+      color: var(--gold);
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* --- Dashboard --- */
+    .user-info-card {
+      background: linear-gradient(145deg, var(--light-blue), #2c425c);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .user-info-card #userName { font-size: 1.8rem; font-weight: 700; }
+    .user-info-card #userIdDisplay {
+      background-color: rgba(0,0,0,0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 5px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .balance-card {
+      background: var(--mid-blue);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+    .balance-card .label { font-size: 1rem; opacity: 0.8; }
+    .balance-card #userBalance {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-family: 'Teko', sans-serif;
+      color: var(--gold);
+    }
+
+    .dashboard-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 15px;
+    }
+    .nav-btn {
+      background-color: var(--card-bg);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    .nav-btn:hover { background-color: #2a2a2a; }
+    .nav-btn:active { transform: scale(0.95); }
+
+    /* --- Packages on Dashboard --- */
+    .packages-title {
+        margin-top: 20px;
+        margin-bottom: -5px;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--gold);
+        text-align: center;
+    }
+    .packages-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+    }
+    .package-card {
+      background: var(--mid-blue);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.2s ease;
+    }
+    .package-card:hover {
+        box-shadow: 0 0 15px rgba(65, 90, 119, 0.3);
+    }
+    .package-card.gold {
+      background: linear-gradient(145deg, #b48811, #ffc107);
+      border-color: #ffd54f;
+      color: #000;
+      box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+    }
+    .package-info h3 { font-size: 1.4rem; font-weight: 700; }
+    .package-info p { opacity: 0.8; font-size: 0.9rem; }
+    .package-card.gold .package-info p { color: #333; }
+
+    .activate-btn {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      background-color: var(--gold);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    .activate-btn:hover { background-color: #ffca2c; }
+    .activate-btn:active { transform: scale(0.95); }
+
+    .activate-btn:disabled {
+      background-color: #555;
+      color: #999;
+      cursor: not-allowed;
+    }
+    .package-card.gold .activate-btn {
+      background-color: var(--dark-blue);
+      color: #fff;
+    }
+     .package-card.gold .activate-btn:hover {
+        background-color: #000;
+     }
+    .package-card.gold .activate-btn:disabled {
+      background-color: #555;
+      color: #999;
+    }
+
+  </style>
+</head>
+<body>
+  <canvas id="background-animation"></canvas>
+
+  <div class="app">
+    <header class="header">
+      <div class="flag">🇱🇰</div>
+      <h1>Sri Lanka Investment</h1>
+    </header>
+
+    <!-- Login/Register Screen -->
+    <main id="loginScreen" class="screen active">
+      <div id="registerForm" class="form-container">
+        <h2 class="form-title">Create Account</h2>
+        <div class="input-group">
+          <label for="regFullName">Full Name</label>
+          <input type="text" id="regFullName" placeholder="e.g., Sunil Perera">
+        </div>
+        <div class="input-group">
+          <label for="regPhone">Phone Number</label>
+          <input type="tel" id="regPhone" placeholder="e.g., 0771234567">
+        </div>
+        <button id="registerBtn" class="btn">Register</button>
+        <p class="form-toggle">Already have an account? <span class="link" id="showLogin">Login here</span></p>
+      </div>
+
+      <div id="loginForm" class="form-container" style="display: none;">
+        <h2 class="form-title">Login to Account</h2>
+        <div class="input-group">
+          <label for="loginId">Your Unique ID</label>
+          <input type="text" id="loginId" placeholder="Enter your 10-digit ID">
+        </div>
+        <div class="input-group">
+          <label for="loginPass">Password</label>
+          <input type="password" id="loginPass" placeholder="Enter your 8-digit password">
+        </div>
+        <button id="loginBtn" class="btn">Login</button>
+        <p class="form-toggle">Don't have an account? <span class="link" id="showRegister">Register now</span></p>
+      </div>
+    </main>
+
+    <!-- Dashboard Screen -->
+    <main id="dashboardScreen" class="screen">
+      <div class="user-info-card">
+        <h2 id="userName">User Name</h2>
+        <p>ID: <span id="userIdDisplay">0000000000</span></p>
+      </div>
+      <div class="balance-card">
+        <p class="label">Available Balance</p>
+        <h2 id="userBalance">Rs 0.00</h2>
+      </div>
+      <div class="dashboard-nav">
+        <div class="nav-btn" data-screen="depositScreen">Deposit</div>
+        <div class="nav-btn" data-screen="withdrawalScreen">Withdrawal</div>
+        <div class="nav-btn" data-screen="infoScreen">Information</div>
+      </div>
+      
+      <h3 class="packages-title">Investment Packages</h3>
+      <div id="packagesContainer" class="packages-container">
+        <!-- Packages will be dynamically inserted here -->
+      </div>
+      
+      <button id="logoutBtn" class="btn" style="background-color: var(--light-blue); color: var(--text-light); margin-top: 10px;">Logout</button>
+    </main>
+
+    <!-- Placeholder Screens -->
+    <main id="depositScreen" class="screen">
+      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
+      <h2>Deposit (Coming Soon)</h2>
+    </main>
+    <main id="withdrawalScreen" class="screen">
+      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
+      <h2>Withdrawal (Coming Soon)</h2>
+    </main>
+    <main id="infoScreen" class="screen">
+      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
+      <h2>Information (Coming Soon)</h2>
+    </main>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Background Animation ---
+      const canvas = document.getElementById('background-animation');
+      const ctx = canvas.getContext('2d');
+      let width, height, particles;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 50; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 1.5 + 0.5
+          });
+        }
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = 'rgba(65, 90, 119, 0.1)';
+        
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(animate);
+      }
+      resize();
+      animate();
+      window.addEventListener('resize', resize);
+      
+      // --- App Logic ---
+      const screens = document.querySelectorAll('.screen');
+      const loginScreen = document.getElementById('loginScreen');
+      const dashboardScreen = document.getElementById('dashboardScreen');
+      
+      const registerForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      const showLoginBtn = document.getElementById('showLogin');
+      const showRegisterBtn = document.getElementById('showRegister');
+
+      const registerBtn = document.getElementById('registerBtn');
+      const loginBtn = document.getElementById('loginBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      
+      const regFullNameInput = document.getElementById('regFullName');
+      const regPhoneInput = document.getElementById('regPhone');
+      const loginIdInput = document.getElementById('loginId');
+      const loginPassInput = document.getElementById('loginPass');
+      
+      const userNameDisplay = document.getElementById('userName');
+      const userIdDisplay = document.getElementById('userIdDisplay');
+      const userBalanceDisplay = document.getElementById('userBalance');
+
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const backToDashButtons = document.querySelectorAll('.back-to-dash');
+      const packagesContainer = document.getElementById('packagesContainer');
+
+      let users = JSON.parse(localStorage.getItem('investmentUsers')) || {};
+      let currentUserId = localStorage.getItem('currentUserId') || null;
+
+      const PACKAGES = [
+        { id: 'p2500', price: 2500, type: 'regular' },
+        { id: 'p5000', price: 5000, type: 'regular' },
+        { id: 'p9000', price: 9000, type: 'regular' },
+        { id: 'p25000', price: 25000, type: 'regular' },
+        { id: 'p50000', price: 50000, type: 'gold' },
+        { id: 'p100000', price: 100000, type: 'gold' },
+      ];
+
+      function showScreen(screenId) {
+        screens.forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+      }
+
+      function saveData() {
+        localStorage.setItem('investmentUsers', JSON.stringify(users));
+        localStorage.setItem('currentUserId', currentUserId);
+      }
+
+      function generateUniqueId() {
+        let id;
+        do { id = Math.random().toString().substr(2, 10); } while (users[id]);
+        return id;
+      }
+
+      function generatePassword() {
+        return Math.random().toString().substr(2, 8);
+      }
+
+      function updateDashboard() {
+        if (!currentUserId || !users[currentUserId]) { logout(); return; }
+        const user = users[currentUserId];
+        userNameDisplay.textContent = user.fullName;
+        userIdDisplay.textContent = user.id;
+        
+        const balance = user.packages.reduce((total, pkgId) => {
+          const pkg = PACKAGES.find(p => p.id === pkgId);
+          return total + (pkg ? pkg.price : 0);
+        }, 0);
+        user.balance = balance; // update user object
+        userBalanceDisplay.textContent = `Rs ${balance.toFixed(2)}`;
+        renderPackages();
+      }
+
+      function login(userId, password) {
+        if (users[userId] && users[userId].password === password) {
+          currentUserId = userId;
+          saveData();
+          updateDashboard();
+          showScreen('dashboardScreen');
+        } else {
+          alert('Invalid ID or Password. Please check and try again.');
+        }
+      }
+
+      function logout() {
+        currentUserId = null;
+        localStorage.removeItem('currentUserId');
+        showScreen('loginScreen');
+      }
+
+      function renderPackages() {
+        const user = users[currentUserId];
+        if (!user) return;
+        packagesContainer.innerHTML = '';
+        PACKAGES.forEach(pkg => {
+          const isActivated = user.packages.includes(pkg.id);
+          const card = document.createElement('div');
+          card.className = `package-card ${pkg.type}`;
+          card.innerHTML = `
+            <div class="package-info">
+              <h3>Package ${pkg.price.toLocaleString()}</h3>
+              <p>Activate to start earning</p>
+            </div>
+            <button class="activate-btn" data-pkg-id="${pkg.id}" data-pkg-price="${pkg.price}" ${isActivated ? 'disabled' : ''}>
+              ${isActivated ? 'Activated' : 'Activate'}
+            </button>
+          `;
+          packagesContainer.appendChild(card);
+        });
+      }
+
+      showLoginBtn.addEventListener('click', () => {
+        registerForm.style.display = 'none'; loginForm.style.display = 'flex';
+      });
+      showRegisterBtn.addEventListener('click', () => {
+        loginForm.style.display = 'none'; registerForm.style.display = 'flex';
+      });
+
+      registerBtn.addEventListener('click', () => {
+        const fullName = regFullNameInput.value.trim();
+        const phone = regPhoneInput.value.trim();
+        if (!fullName || !phone) { alert('Please fill in all fields.'); return; }
+        
+        const newId = generateUniqueId();
+        const newPassword = generatePassword();
+        users[newId] = { id: newId, password: newPassword, fullName: fullName, phone: phone, packages: [], balance: 0 };
+        
+        alert(`Registration Successful!\n\nYour Unique ID: ${newId}\nYour Password: ${newPassword}\n\nPlease save these details for future login.`);
+        
+        login(newId, newPassword);
+        regFullNameInput.value = ''; regPhoneInput.value = '';
+      });
+
+      loginBtn.addEventListener('click', () => {
+        const id = loginIdInput.value.trim();
+        const pass = loginPassInput.value.trim();
+        if (!id || !pass) { alert('Please enter your ID and Password.'); return; }
+        login(id, pass);
+      });
+
+      logoutBtn.addEventListener('click', logout);
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const screenId = btn.dataset.screen;
+          showScreen(screenId);
+        });
+      });
+
+      backToDashButtons.forEach(btn => {
+        btn.addEventListener('click', () => showScreen('dashboardScreen'));
+      });
+      
+      packagesContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('activate-btn') && !e.target.disabled) {
+          const pkgId = e.target.dataset.pkgId;
+          const pkgPrice = parseFloat(e.target.dataset.pkgPrice);
+          const user = users[currentUserId];
+          if (user && !user.packages.includes(pkgId)) {
+            user.packages.push(pkgId);
+            updateDashboard(); // Recalculate balance and re-render
+            saveData();
+            alert(`Package ${pkgPrice.toLocaleString()} activated successfully!`);
+          }
+        }
+      });
+
+      function init() {
+        if (currentUserId && users[currentUserId]) {
+          updateDashboard();
+          showScreen('dashboardScreen');
+        } else {
+          showScreen('loginScreen');
+        }
+      }
+
+      init();
+    });
+  </script>
+
+</body>
+</html>
