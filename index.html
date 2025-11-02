@@ -19,6 +19,7 @@
       --gold: #FFC107;
       --border-color: rgba(128, 154, 186, 0.2);
       --success-green: #2a9d8f;
+      --pending-yellow: #e9c46a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { height: 100%; }
@@ -66,21 +67,41 @@
     .header {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between; /* Changed from 'center' */
       gap: 15px;
       padding-bottom: 20px;
       border-bottom: 1px solid var(--border-color);
       margin-bottom: 20px;
     }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
     .header h1 {
       font-family: 'Teko', sans-serif;
-      font-size: 2.5rem;
+      font-size: 2.2rem; /* Adjusted size */
       color: var(--gold);
       text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
     }
     .flag {
       font-size: 2.5rem;
     }
+    #withdrawalHeaderBtn {
+      background-color: var(--success-green);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none; /* Hidden by default */
+      transition: background-color 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    #withdrawalHeaderBtn:hover { background-color: #248a7f; }
+    #withdrawalHeaderBtn:active { transform: scale(0.95); }
 
     /* --- Forms & Inputs --- */
     .form-container {
@@ -202,8 +223,8 @@
     .nav-btn:hover { background-color: #2a2a2a; }
     .nav-btn:active { transform: scale(0.95); }
 
-    /* --- Packages on Dashboard --- */
-    .packages-title {
+    /* --- Packages & Info Screen --- */
+    .section-title {
         margin-top: 20px;
         margin-bottom: -5px;
         font-size: 1.3rem;
@@ -211,7 +232,7 @@
         color: var(--gold);
         text-align: center;
     }
-    .packages-container {
+    .packages-container, .pending-withdrawals-container, .feedback-section {
       display: flex;
       flex-direction: column;
       gap: 15px;
@@ -246,29 +267,20 @@
     .package-card.gold .package-info p { color: #333; }
     .package-card.gold .package-info p.profit { color: #005f29; }
 
-    .activate-btn {
+    .activate-btn, .details-btn {
       padding: 10px 20px;
       font-size: 0.9rem;
       font-weight: 700;
-      color: var(--dark-blue);
-      background-color: var(--gold);
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.1s ease;
     }
+    .activate-btn { color: var(--dark-blue); background-color: var(--gold); }
     .activate-btn:hover { background-color: #ffca2c; }
     .activate-btn:active { transform: scale(0.95); }
-
-    .activate-btn:disabled {
-      background-color: #555;
-      color: #999;
-      cursor: not-allowed;
-    }
-    .package-card.gold .activate-btn {
-      background-color: var(--dark-blue);
-      color: #fff;
-    }
+    .activate-btn:disabled { background-color: #555; color: #999; cursor: not-allowed; }
+    .package-card.gold .activate-btn { background-color: var(--dark-blue); color: #fff; }
      .package-card.gold .activate-btn:hover {
         background-color: #000;
      }
@@ -276,49 +288,37 @@
       background-color: #555;
       color: #999;
     }
+    
+    .package-actions { display: flex; gap: 10px; }
+    .details-btn { background-color: var(--light-blue); color: var(--text-light); }
+    .info-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .info-table th, .info-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+    .info-table th { background-color: rgba(65, 90, 119, 0.3); font-size: 0.9rem; }
+    .info-table td { font-size: 1rem; }
+    .info-table tr:last-child td { border-bottom: none; }
+    .info-table .price { font-weight: 700; }
+    .info-table .profit { color: var(--success-green); font-weight: 600; }
 
-    /* Deposit Screen */
-    .deposit-details {
-      background-color: var(--mid-blue);
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-    }
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border-color);
-    }
+    .withdrawal-notice { background-color: var(--mid-blue); padding: 20px; border-radius: 12px; text-align: center; margin-top: 10px; border: 1px solid var(--pending-yellow); }
+    
+    .deposit-details { background-color: var(--mid-blue); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
+    .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
     .detail-row:last-child { border-bottom: none; }
     .detail-row .label { opacity: 0.7; }
     .detail-row .value { font-weight: 600; }
 
+    /* Pending Withdrawals */
+    .withdrawal-card { background: var(--mid-blue); padding: 15px; border-radius: 12px; border-left: 5px solid var(--pending-yellow); }
+    .withdrawal-card .amount { font-size: 1.5rem; font-weight: 700; }
+    .withdrawal-card .details { font-size: 0.8rem; opacity: 0.7; line-height: 1.4; }
+    .withdrawal-card .code { margin-top: 10px; font-family: monospace; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 5px; display: inline-block; letter-spacing: 1px; }
+
     /* Customer Feedback */
-    .feedback-section {
-      margin-top: 20px;
-    }
-    .feedback-card {
-      background: var(--mid-blue);
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    .feedback-avatar {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background-color: var(--light-blue);
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-    }
+    .feedback-card { background: var(--mid-blue); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; gap: 15px; align-items: center; animation: feed-in 0.5s ease; }
+    @keyframes feed-in { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    .feedback-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--light-blue); flex-shrink: 0; display: grid; place-items: center; font-weight: 700; }
     .feedback-content .name { font-weight: 700; }
     .feedback-content .message { font-size: 0.9rem; opacity: 0.8; }
-
   </style>
 </head>
 <body>
@@ -326,121 +326,86 @@
 
   <div class="app">
     <header class="header">
-      <div class="flag">🇱🇰</div>
-      <h1>Sri Lanka Investment</h1>
+      <div class="header-brand">
+        <div class="flag">🇱🇰</div>
+        <h1>Sri Lanka Investment</h1>
+      </div>
+      <button id="withdrawalHeaderBtn">Withdrawal</button>
     </header>
 
-    <!-- Login/Register Screen -->
     <main id="loginScreen" class="screen active">
       <div id="registerForm" class="form-container">
         <h2 class="form-title">Create Account</h2>
-        <div class="input-group">
-          <label for="regFullName">Full Name</label>
-          <input type="text" id="regFullName" placeholder="e.g., Sunil Perera">
-        </div>
-        <div class="input-group">
-          <label for="regPhone">Phone Number</label>
-          <input type="tel" id="regPhone" placeholder="e.g., 0771234567">
-        </div>
+        <div class="input-group"><label for="regFullName">Full Name</label><input type="text" id="regFullName" placeholder="e.g., Sunil Perera"></div>
+        <div class="input-group"><label for="regPhone">Phone Number</label><input type="tel" id="regPhone" placeholder="e.g., 0771234567"></div>
         <button id="registerBtn" class="btn">Register</button>
         <p class="form-toggle">Already have an account? <span class="link" id="showLogin">Login here</span></p>
       </div>
-
       <div id="loginForm" class="form-container" style="display: none;">
         <h2 class="form-title">Login to Account</h2>
-        <div class="input-group">
-          <label for="loginId">Your Unique ID</label>
-          <input type="text" id="loginId" placeholder="Enter your 10-digit ID">
-        </div>
-        <div class="input-group">
-          <label for="loginPass">Password</label>
-          <input type="password" id="loginPass" placeholder="Enter your 8-digit password">
-        </div>
+        <div class="input-group"><label for="loginId">Your Unique ID</label><input type="text" id="loginId" placeholder="Enter your 10-digit ID"></div>
+        <div class="input-group"><label for="loginPass">Password</label><input type="password" id="loginPass" placeholder="Enter your 8-digit password"></div>
         <button id="loginBtn" class="btn">Login</button>
         <p class="form-toggle">Don't have an account? <span class="link" id="showRegister">Register now</span></p>
       </div>
     </main>
 
-    <!-- Dashboard Screen -->
     <main id="dashboardScreen" class="screen">
       <div class="user-info-card">
         <h2 id="userName">User Name</h2>
         <p>ID: <span id="userIdDisplay">0000000000</span></p>
       </div>
-      <div class="balance-card">
-        <p class="label">Available Balance</p>
-        <h2 id="userBalance">Rs 0.00</h2>
-      </div>
+      <div class="balance-card"><p class="label">Available Balance</p><h2 id="userBalance">Rs 0.00</h2></div>
       <div class="dashboard-nav">
         <div class="nav-btn" data-screen="depositScreen">Deposit</div>
-        <div class="nav-btn" data-screen="withdrawalScreen">Withdrawal</div>
+        <div class="nav-btn" data-screen="activePackagesScreen">Active Packages</div>
         <div class="nav-btn" data-screen="infoScreen">Information</div>
       </div>
-      
-      <h3 class="packages-title">Investment Packages</h3>
-      <div id="packagesContainer" class="packages-container">
-        <!-- Packages will be dynamically inserted here -->
+      <h3 class="section-title">All Investment Packages</h3>
+      <div id="packagesContainer" class="packages-container"></div>
+      <div id="pendingWithdrawalsSection" style="display: none;">
+        <h3 class="section-title">Pending Withdrawals</h3>
+        <div id="pendingWithdrawalsContainer" class="packages-container"></div>
       </div>
-
       <div class="feedback-section">
-        <h3 class="packages-title" style="margin-bottom: 15px;">Customer Feedback</h3>
-        <div class="packages-container">
-            <div class="feedback-card">
-                <div class="feedback-avatar">SP</div>
-                <div class="feedback-content">
-                    <div class="name">Sunil Perera</div>
-                    <div class="message">"Very trustworthy platform. I got my first profit today. Thank you!"</div>
-                </div>
-            </div>
-            <div class="feedback-card">
-                <div class="feedback-avatar">FS</div>
-                <div class="feedback-content">
-                    <div class="name">Fathima Silva</div>
-                    <div class="message">"Good investment plans. I activated the gold package."</div>
-                </div>
-            </div>
-        </div>
+        <h3 class="section-title" style="margin-bottom: 15px;">Customer Feedback</h3>
+        <div id="feedbackContainer" class="packages-container"></div>
       </div>
-      
-      <button id="logoutBtn" class="btn" style="background-color: var(--light-blue); color: var(--text-light); margin-top: 20px;">Logout</button>
+    </main>
+    
+    <main id="settingsScreen" class="screen">
+      <div class="backRow" style="margin-bottom: 0;"><button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button></div>
+      <div class="form-container">
+        <h2 class="form-title">Request Withdrawal</h2>
+        <div class="input-group"><label for="wdAmount">Amount</label><input type="number" id="wdAmount" placeholder="Min. Rs 1,000"></div>
+        <button id="submitWithdrawalBtn" class="btn">Submit Request</button>
+      </div>
+      <div class="form-container">
+        <h2 class="form-title">Account</h2>
+        <button id="logoutBtn" class="btn" style="background-color: #782934; color: var(--text-light);">Logout</button>
+      </div>
     </main>
 
-    <!-- Deposit Screen -->
     <main id="depositScreen" class="screen">
-        <div class="backRow" style="margin-bottom: 0;">
-            <button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button>
-        </div>
-        <div class="form-container">
-            <h2 class="form-title">Bank Deposit Details</h2>
-            <div class="deposit-details">
-                <div class="detail-row"><span class="label">Bank</span><span class="value">Commercial Bank</span></div>
-                <div class="detail-row"><span class="label">Account No</span><span class="value">8001234567</span></div>
-                <div class="detail-row"><span class="label">Name</span><span class="value">SL Investments (Pvt) Ltd</span></div>
-                <div class="detail-row"><span class="label">Branch</span><span class="value">Colombo 07</span></div>
-            </div>
-        </div>
-        <div class="form-container">
-            <h2 class="form-title">Upload Your Slip</h2>
-             <div class="input-group">
-                <label for="depositGameId">Your Game ID</label>
-                <input type="text" id="depositGameId" readonly>
-            </div>
-            <div class="input-group">
-                <label for="slipUpload">Choose deposit slip photo</label>
-                <input type="file" id="slipUpload" accept="image/*" style="padding: 10px;">
-            </div>
-            <button id="uploadSlipBtn" class="btn">Upload Slip</button>
-        </div>
+        <div class="backRow" style="margin-bottom: 0;"><button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button></div>
+        <div class="form-container"><h2 class="form-title">Bank Deposit Details</h2><div class="deposit-details"><div class="detail-row"><span class="label">Bank</span><span class="value">Commercial Bank</span></div><div class="detail-row"><span class="label">Account No</span><span class="value">8001234567</span></div><div class="detail-row"><span class="label">Name</span><span class="value">SL Investments (Pvt) Ltd</span></div><div class="detail-row"><span class="label">Branch</span><span class="value">Colombo 07</span></div></div></div>
+        <div class="form-container"><h2 class="form-title">Upload Your Slip</h2><div class="input-group"><label for="depositGameId">Your Game ID</label><input type="text" id="depositGameId" readonly></div><div class="input-group"><label for="slipUpload">Choose deposit slip photo</label><input type="file" id="slipUpload" accept="image/*" style="padding: 10px;"></div><button id="uploadSlipBtn" class="btn">Upload Slip</button></div>
     </main>
 
-    <!-- Placeholder Screens -->
-    <main id="withdrawalScreen" class="screen">
-      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
-      <h2>Withdrawal (Coming Soon)</h2>
-    </main>
     <main id="infoScreen" class="screen">
-      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
-      <h2>Information (Coming Soon)</h2>
+      <div class="backRow"><button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button></div>
+       <div class="form-container"><h2 class="form-title">Package Information</h2><table class="info-table"><thead><tr><th>Package</th><th>Daily Profit</th><th>7 Day Profit</th></tr></thead><tbody id="infoTableBody"></tbody></table></div>
+       <div class="withdrawal-notice"><p>Withdrawals are available <strong>every Sunday</strong>.</p></div>
+    </main>
+
+    <main id="activePackagesScreen" class="screen">
+      <div class="backRow"><button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button></div>
+      <div class="form-container" style="width: 100%;"><h2 class="form-title">My Active Packages</h2><div id="activePackagesContainer" class="packages-container"></div></div>
+    </main>
+
+    <main id="packageDetailsScreen" class="screen">
+      <div class="backRow"><button id="backToActivePackagesBtn" class="linkBtn" style="background-color: var(--light-blue);">← Back</button></div>
+       <div class="form-container"><h2 class="form-title" id="pkgDetailTitle">Package Details</h2><div id="pkgDetailContent" class="deposit-details"></div></div>
     </main>
 
   </div>
@@ -451,24 +416,13 @@
       const canvas = document.getElementById('background-animation');
       const ctx = canvas.getContext('2d');
       let width, height, particles;
-
       function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        particles = [];
-        const particleCount = Math.floor(width * height / 20000);
-        for (let i = 0; i < particleCount; i++) {
-          particles.push({
-            x: Math.random() * width, y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-            radius: Math.random() * 1.5 + 0.5
-          });
-        }
+        width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
+        particles = []; const particleCount = Math.floor(width * height / 20000);
+        for (let i = 0; i < particleCount; i++) { particles.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, radius: Math.random() * 1.5 + 0.5 }); }
       }
-      
       function animate() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = 'rgba(65, 90, 119, 0.1)';
+        ctx.clearRect(0, 0, width, height); ctx.fillStyle = 'rgba(65, 90, 119, 0.1)';
         for (const p of particles) {
           p.x += p.vx; p.y += p.vy;
           if (p.x < 0 || p.x > width) p.vx *= -1;
@@ -481,8 +435,6 @@
       
       // --- App Logic ---
       const screens = document.querySelectorAll('.screen');
-      const loginScreen = document.getElementById('loginScreen');
-      const dashboardScreen = document.getElementById('dashboardScreen');
       const registerForm = document.getElementById('registerForm');
       const loginForm = document.getElementById('loginForm');
       const showLoginBtn = document.getElementById('showLogin');
@@ -500,8 +452,18 @@
       const navButtons = document.querySelectorAll('.nav-btn');
       const backToDashButtons = document.querySelectorAll('.back-to-dash');
       const packagesContainer = document.getElementById('packagesContainer');
+      const activePackagesContainer = document.getElementById('activePackagesContainer');
       const depositGameIdInput = document.getElementById('depositGameId');
       const uploadSlipBtn = document.getElementById('uploadSlipBtn');
+      const infoTableBody = document.getElementById('infoTableBody');
+      const feedbackContainer = document.getElementById('feedbackContainer');
+      const pkgDetailTitle = document.getElementById('pkgDetailTitle');
+      const pkgDetailContent = document.getElementById('pkgDetailContent');
+      const backToActivePackagesBtn = document.getElementById('backToActivePackagesBtn');
+      const withdrawalHeaderBtn = document.getElementById('withdrawalHeaderBtn');
+      const submitWithdrawalBtn = document.getElementById('submitWithdrawalBtn');
+      const pendingWithdrawalsSection = document.getElementById('pendingWithdrawalsSection');
+      const pendingWithdrawalsContainer = document.getElementById('pendingWithdrawalsContainer');
 
       let users = JSON.parse(localStorage.getItem('investmentUsers')) || {};
       let currentUserId = localStorage.getItem('currentUserId') || null;
@@ -518,6 +480,7 @@
       function showScreen(screenId) {
         screens.forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
+        withdrawalHeaderBtn.style.display = screenId === 'dashboardScreen' ? 'block' : 'none';
       }
 
       function saveData() {
@@ -526,11 +489,11 @@
       }
 
       function generateUniqueId() {
-        let id;
-        do { id = Math.random().toString().substr(2, 10); } while (users[id]);
+        let id; do { id = Math.random().toString().substr(2, 10); } while (users[id]);
         return id;
       }
-      function generatePassword() { return Math.random().toString().substr(2, 8); }
+      function generatePassword() { return Math.floor(10000000 + Math.random() * 90000000).toString(); }
+      function generateWithdrawalCode() { return Math.floor(1000 + Math.random() * 9000).toString(); }
 
       function updateDashboard() {
         if (!currentUserId || !users[currentUserId]) { logout(); return; }
@@ -540,12 +503,14 @@
         userBalanceDisplay.textContent = `Rs ${user.balance.toFixed(2)}`;
         depositGameIdInput.value = user.id;
         renderPackages();
+        renderPendingWithdrawals();
       }
 
       function login(userId, password) {
         if (users[userId] && users[userId].password === password) {
           currentUserId = userId;
           saveData();
+          calculateAndAddProfit();
           updateDashboard();
           showScreen('dashboardScreen');
         } else {
@@ -567,68 +532,105 @@
           const isActivated = user.packages.find(p => p.id === pkg.id);
           const card = document.createElement('div');
           card.className = `package-card ${pkg.type}`;
-          card.innerHTML = `
-            <div class="package-info">
-              <h3>Package ${pkg.price.toLocaleString()}</h3>
-              <p class="profit">Profit/Day: Rs ${pkg.profit.toLocaleString()}</p>
-            </div>
-            <button class="activate-btn" data-pkg-id="${pkg.id}" data-pkg-price="${pkg.price}" ${isActivated ? 'disabled' : ''}>
-              ${isActivated ? 'Activated' : 'Activate'}
-            </button>
-          `;
+          let buttonsHTML = '';
+          if (isActivated) {
+              buttonsHTML = `<div class="package-actions"><button class="activate-btn" disabled>Activated</button><button class="details-btn" data-pkg-id="${pkg.id}">Details</button></div>`;
+          } else {
+              buttonsHTML = `<button class="activate-btn" data-pkg-id="${pkg.id}" data-pkg-price="${pkg.price}">Activate</button>`;
+          }
+          card.innerHTML = `<div class="package-info"><h3>Package ${pkg.price.toLocaleString()}</h3><p class="profit">Profit/Day: Rs ${pkg.profit.toLocaleString()}</p></div>${buttonsHTML}`;
           packagesContainer.appendChild(card);
         });
       }
+
+      function renderActivePackages() {
+        const user = users[currentUserId];
+        if (!user || user.packages.length === 0) {
+            activePackagesContainer.innerHTML = `<p style="text-align:center; opacity: 0.7;">You have no active packages.</p>`;
+            return;
+        }
+        activePackagesContainer.innerHTML = '';
+        user.packages.forEach(activePkg => {
+            const pkg = PACKAGES.find(p => p.id === activePkg.id);
+            if(!pkg) return;
+            const card = document.createElement('div');
+            card.className = `package-card ${pkg.type}`;
+            card.innerHTML = `<div class="package-info"><h3>Package ${pkg.price.toLocaleString()}</h3><p class="profit">Profit/Day: Rs ${pkg.profit.toLocaleString()}</p></div><div class="package-actions"><button class="details-btn" data-pkg-id="${pkg.id}">Details</button></div>`;
+            activePackagesContainer.appendChild(card);
+        });
+      }
       
+      function showPackageDetails(pkgId) {
+          const user = users[currentUserId];
+          const activatedPkg = user.packages.find(p => p.id === pkgId);
+          const packageInfo = PACKAGES.find(p => p.id === pkgId);
+          if(!activatedPkg || !packageInfo) return;
+          pkgDetailTitle.textContent = `Package ${packageInfo.price.toLocaleString()} Details`;
+          pkgDetailContent.innerHTML = `<div class="detail-row"><span class="label">Activation Date</span><span class="value">${new Date(activatedPkg.activatedAt).toLocaleString()}</span></div><div class="detail-row"><span class="label">Daily Profit</span><span class="value">Rs ${packageInfo.profit.toLocaleString()}</span></div><div class="detail-row"><span class="label">Total Profit Earned</span><span class="value">Rs ${activatedPkg.claimedProfit.toFixed(2)}</span></div>`;
+          showScreen('packageDetailsScreen');
+      }
+      
+      function renderInfoTable() {
+        infoTableBody.innerHTML = '';
+        PACKAGES.forEach(pkg => {
+            const sevenDayProfit = pkg.profit * 7;
+            const row = document.createElement('tr');
+            row.innerHTML = `<td class="price">Rs ${pkg.price.toLocaleString()}</td><td class="profit">Rs ${pkg.profit.toLocaleString()}</td><td class="profit">Rs ${sevenDayProfit.toLocaleString()}</td>`;
+            infoTableBody.appendChild(row);
+        });
+      }
+
       function calculateAndAddProfit() {
         if (!currentUserId || !users[currentUserId]) return;
         const user = users[currentUserId];
         const now = Date.now();
         let totalProfit = 0;
-        
+        if (!user.packages) user.packages = [];
         user.packages.forEach(activePackage => {
             const packageData = PACKAGES.find(p => p.id === activePackage.id);
             if (!packageData) return;
-
             const timeSinceActivation = now - activePackage.activatedAt;
-            const daysSinceActivation = Math.floor(timeSinceActivation / (1000 * 60 * 60 * 24));
-            
-            const profitCyclesPassed = daysSinceActivation;
+            const profitCyclesPassed = Math.floor(timeSinceActivation / (1000 * 60 * 60 * 24));
             const profitEarned = profitCyclesPassed * packageData.profit;
-            
             const newProfitToAdd = profitEarned - (activePackage.claimedProfit || 0);
-
             if(newProfitToAdd > 0){
                 totalProfit += newProfitToAdd;
                 activePackage.claimedProfit = profitEarned;
             }
         });
-
         if (totalProfit > 0) {
             user.balance += totalProfit;
             saveData();
-            updateDashboard(); // Update UI
         }
       }
+      
+      function renderPendingWithdrawals() {
+          const user = users[currentUserId];
+          if (!user || !user.withdrawals || user.withdrawals.length === 0) {
+              pendingWithdrawalsSection.style.display = 'none';
+              return;
+          }
+          pendingWithdrawalsSection.style.display = 'block';
+          pendingWithdrawalsContainer.innerHTML = '';
+          user.withdrawals.forEach(wd => {
+              const card = document.createElement('div');
+              card.className = 'withdrawal-card';
+              card.innerHTML = `<div class="amount">Rs ${wd.amount.toLocaleString()}</div><div class="code">Status: PENDING | Code: <strong>${wd.code}</strong></div>`;
+              pendingWithdrawalsContainer.appendChild(card);
+          });
+      }
 
-      showLoginBtn.addEventListener('click', () => {
-        registerForm.style.display = 'none'; loginForm.style.display = 'flex';
-      });
-      showRegisterBtn.addEventListener('click', () => {
-        loginForm.style.display = 'none'; registerForm.style.display = 'flex';
-      });
+      showLoginBtn.addEventListener('click', () => { registerForm.style.display = 'none'; loginForm.style.display = 'flex'; });
+      showRegisterBtn.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'flex'; });
 
       registerBtn.addEventListener('click', () => {
         const fullName = regFullNameInput.value.trim();
         const phone = regPhoneInput.value.trim();
         if (!fullName || !phone) { alert('Please fill in all fields.'); return; }
-        
         const newId = generateUniqueId();
         const newPassword = generatePassword();
-        users[newId] = { id: newId, password: newPassword, fullName: fullName, phone: phone, packages: [], balance: 0 };
-        
+        users[newId] = { id: newId, password: newPassword, fullName, phone, packages: [], withdrawals: [], balance: 0 };
         alert(`Registration Successful!\n\nYour Unique ID: ${newId}\nYour Password: ${newPassword}\n\nPlease save these details for future login.`);
-        
         login(newId, newPassword);
         regFullNameInput.value = ''; regPhoneInput.value = '';
       });
@@ -641,19 +643,20 @@
       });
 
       logoutBtn.addEventListener('click', logout);
-
+      
       navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const screenId = btn.dataset.screen;
-          showScreen(screenId);
+        btn.addEventListener('click', (e) => {
+            const screenId = e.currentTarget.dataset.screen;
+            if(screenId === 'infoScreen') renderInfoTable();
+            if(screenId === 'activePackagesScreen') renderActivePackages();
+            showScreen(screenId);
         });
       });
 
-      backToDashButtons.forEach(btn => {
-        btn.addEventListener('click', () => showScreen('dashboardScreen'));
-      });
+      backToDashButtons.forEach(btn => btn.addEventListener('click', () => showScreen('dashboardScreen')));
+      backToActivePackagesBtn.addEventListener('click', () => showScreen('activePackagesScreen'));
       
-      packagesContainer.addEventListener('click', (e) => {
+      const packageActionsHandler = (e) => {
         if (e.target.classList.contains('activate-btn') && !e.target.disabled) {
           const pkgId = e.target.dataset.pkgId;
           const pkgPrice = parseFloat(e.target.dataset.pkgPrice);
@@ -662,28 +665,67 @@
             if (user.balance >= pkgPrice) {
                 user.balance -= pkgPrice;
                 user.packages.push({ id: pkgId, activatedAt: Date.now(), claimedProfit: 0 });
-                updateDashboard();
-                saveData();
+                updateDashboard(); saveData();
                 alert(`Package ${pkgPrice.toLocaleString()} activated successfully!`);
-            } else {
-                alert("Insufficient balance. Please deposit money.");
-            }
+            } else { alert("Insufficient balance. Please deposit money."); }
           }
+        } else if (e.target.classList.contains('details-btn')) {
+            const pkgId = e.target.dataset.pkgId;
+            showPackageDetails(pkgId);
         }
+      };
+      packagesContainer.addEventListener('click', packageActionsHandler);
+      activePackagesContainer.addEventListener('click', packageActionsHandler);
+      
+      uploadSlipBtn.addEventListener('click', () => alert('Slip uploaded for review. (This is a demo)'));
+      withdrawalHeaderBtn.addEventListener('click', () => showScreen('settingsScreen'));
+      
+      submitWithdrawalBtn.addEventListener('click', () => {
+          const user = users[currentUserId];
+          const amount = parseFloat(document.getElementById('wdAmount').value);
+          if (isNaN(amount) || amount <= 0) { alert('Please enter a valid amount.'); return; }
+          if (amount < 1000) { alert('Minimum withdrawal amount is Rs 1,000.'); return; }
+          if (amount > user.balance) { alert('Insufficient balance.'); return; }
+
+          user.balance -= amount;
+          const req = { code: generateWithdrawalCode(), amount, requestedAt: Date.now(), status: 'pending' };
+          if (!user.withdrawals) user.withdrawals = [];
+          user.withdrawals.push(req);
+          saveData(); updateDashboard(); showScreen('dashboardScreen');
+          alert(`Withdrawal request submitted! Your withdrawal code is ${req.code}. It will be processed within 24 hours.`);
       });
       
-      uploadSlipBtn.addEventListener('click', () => {
-          alert('Slip upload is a demo feature. Functionality not implemented.');
-      });
+      const RANDOM_FEEDBACK = [
+        { name: "Sahan Perera", msg: "Amazing returns! I started with the 9000 package and already see profit." },
+        { name: "F. Rizan", msg: "Good customer support and a very reliable platform for investment in Sri Lanka." },
+        { name: "Janani K.", msg: "I was skeptical at first, but this is legit. The Gold Package is the best." },
+        { name: "David S.", msg: "Daily profits are credited on time. Highly recommended! 👍" },
+        { name: "Lakshika", msg: "Easy to use and understand. The system is very transparent." },
+        { name: "D. Liyanage", msg: "A great opportunity for Sri Lankans. Thank you for this platform."}
+      ];
+
+      function renderRandomFeedback() {
+        feedbackContainer.innerHTML = '';
+        const shuffled = [...RANDOM_FEEDBACK].sort(() => 0.5 - Math.random());
+        shuffled.slice(0, 2).forEach(fb => {
+            const initials = fb.name.split(' ').map(n => n[0]).join('');
+            const card = document.createElement('div');
+            card.className = 'feedback-card';
+            card.innerHTML = `<div class="feedback-avatar">${initials}</div><div class="feedback-content"><div class="name">${fb.name}</div><div class="message">"${fb.msg}"</div></div>`;
+            feedbackContainer.appendChild(card);
+        });
+      }
 
       function init() {
         if (currentUserId && users[currentUserId]) {
-          calculateAndAddProfit(); // Calculate profit on login
+          calculateAndAddProfit();
           updateDashboard();
           showScreen('dashboardScreen');
         } else {
           showScreen('loginScreen');
         }
+        renderRandomFeedback();
+        setInterval(renderRandomFeedback, 5000);
       }
 
       init();
