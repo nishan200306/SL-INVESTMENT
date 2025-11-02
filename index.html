@@ -18,6 +18,7 @@
       --text-light: #e0e1dd;
       --gold: #FFC107;
       --border-color: rgba(128, 154, 186, 0.2);
+      --success-green: #2a9d8f;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { height: 100%; }
@@ -237,7 +238,13 @@
     }
     .package-info h3 { font-size: 1.4rem; font-weight: 700; }
     .package-info p { opacity: 0.8; font-size: 0.9rem; }
+    .package-info p.profit {
+      font-weight: 600;
+      opacity: 1;
+      color: var(--success-green);
+    }
     .package-card.gold .package-info p { color: #333; }
+    .package-card.gold .package-info p.profit { color: #005f29; }
 
     .activate-btn {
       padding: 10px 20px;
@@ -269,6 +276,48 @@
       background-color: #555;
       color: #999;
     }
+
+    /* Deposit Screen */
+    .deposit-details {
+      background-color: var(--mid-blue);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row .label { opacity: 0.7; }
+    .detail-row .value { font-weight: 600; }
+
+    /* Customer Feedback */
+    .feedback-section {
+      margin-top: 20px;
+    }
+    .feedback-card {
+      background: var(--mid-blue);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    .feedback-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-color: var(--light-blue);
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+    .feedback-content .name { font-weight: 700; }
+    .feedback-content .message { font-size: 0.9rem; opacity: 0.8; }
 
   </style>
 </head>
@@ -332,15 +381,59 @@
       <div id="packagesContainer" class="packages-container">
         <!-- Packages will be dynamically inserted here -->
       </div>
+
+      <div class="feedback-section">
+        <h3 class="packages-title" style="margin-bottom: 15px;">Customer Feedback</h3>
+        <div class="packages-container">
+            <div class="feedback-card">
+                <div class="feedback-avatar">SP</div>
+                <div class="feedback-content">
+                    <div class="name">Sunil Perera</div>
+                    <div class="message">"Very trustworthy platform. I got my first profit today. Thank you!"</div>
+                </div>
+            </div>
+            <div class="feedback-card">
+                <div class="feedback-avatar">FS</div>
+                <div class="feedback-content">
+                    <div class="name">Fathima Silva</div>
+                    <div class="message">"Good investment plans. I activated the gold package."</div>
+                </div>
+            </div>
+        </div>
+      </div>
       
-      <button id="logoutBtn" class="btn" style="background-color: var(--light-blue); color: var(--text-light); margin-top: 10px;">Logout</button>
+      <button id="logoutBtn" class="btn" style="background-color: var(--light-blue); color: var(--text-light); margin-top: 20px;">Logout</button>
+    </main>
+
+    <!-- Deposit Screen -->
+    <main id="depositScreen" class="screen">
+        <div class="backRow" style="margin-bottom: 0;">
+            <button class="linkBtn back-to-dash" style="background-color: var(--light-blue);">← Back</button>
+        </div>
+        <div class="form-container">
+            <h2 class="form-title">Bank Deposit Details</h2>
+            <div class="deposit-details">
+                <div class="detail-row"><span class="label">Bank</span><span class="value">Commercial Bank</span></div>
+                <div class="detail-row"><span class="label">Account No</span><span class="value">8001234567</span></div>
+                <div class="detail-row"><span class="label">Name</span><span class="value">SL Investments (Pvt) Ltd</span></div>
+                <div class="detail-row"><span class="label">Branch</span><span class="value">Colombo 07</span></div>
+            </div>
+        </div>
+        <div class="form-container">
+            <h2 class="form-title">Upload Your Slip</h2>
+             <div class="input-group">
+                <label for="depositGameId">Your Game ID</label>
+                <input type="text" id="depositGameId" readonly>
+            </div>
+            <div class="input-group">
+                <label for="slipUpload">Choose deposit slip photo</label>
+                <input type="file" id="slipUpload" accept="image/*" style="padding: 10px;">
+            </div>
+            <button id="uploadSlipBtn" class="btn">Upload Slip</button>
+        </div>
     </main>
 
     <!-- Placeholder Screens -->
-    <main id="depositScreen" class="screen">
-      <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
-      <h2>Deposit (Coming Soon)</h2>
-    </main>
     <main id="withdrawalScreen" class="screen">
       <div class="backRow"><button class="linkBtn back-to-dash">← Back</button></div>
       <h2>Withdrawal (Coming Soon)</h2>
@@ -363,12 +456,11 @@
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
         particles = [];
-        for (let i = 0; i < 50; i++) {
+        const particleCount = Math.floor(width * height / 20000);
+        for (let i = 0; i < particleCount; i++) {
           particles.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
+            x: Math.random() * width, y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
             radius: Math.random() * 1.5 + 0.5
           });
         }
@@ -377,60 +469,50 @@
       function animate() {
         ctx.clearRect(0, 0, width, height);
         ctx.fillStyle = 'rgba(65, 90, 119, 0.1)';
-        
         for (const p of particles) {
-          p.x += p.vx;
-          p.y += p.vy;
+          p.x += p.vx; p.y += p.vy;
           if (p.x < 0 || p.x > width) p.vx *= -1;
           if (p.y < 0 || p.y > height) p.vy *= -1;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
         }
         requestAnimationFrame(animate);
       }
-      resize();
-      animate();
-      window.addEventListener('resize', resize);
+      resize(); animate(); window.addEventListener('resize', resize);
       
       // --- App Logic ---
       const screens = document.querySelectorAll('.screen');
       const loginScreen = document.getElementById('loginScreen');
       const dashboardScreen = document.getElementById('dashboardScreen');
-      
       const registerForm = document.getElementById('registerForm');
       const loginForm = document.getElementById('loginForm');
       const showLoginBtn = document.getElementById('showLogin');
       const showRegisterBtn = document.getElementById('showRegister');
-
       const registerBtn = document.getElementById('registerBtn');
       const loginBtn = document.getElementById('loginBtn');
       const logoutBtn = document.getElementById('logoutBtn');
-      
       const regFullNameInput = document.getElementById('regFullName');
       const regPhoneInput = document.getElementById('regPhone');
       const loginIdInput = document.getElementById('loginId');
       const loginPassInput = document.getElementById('loginPass');
-      
       const userNameDisplay = document.getElementById('userName');
       const userIdDisplay = document.getElementById('userIdDisplay');
       const userBalanceDisplay = document.getElementById('userBalance');
-
       const navButtons = document.querySelectorAll('.nav-btn');
       const backToDashButtons = document.querySelectorAll('.back-to-dash');
       const packagesContainer = document.getElementById('packagesContainer');
+      const depositGameIdInput = document.getElementById('depositGameId');
+      const uploadSlipBtn = document.getElementById('uploadSlipBtn');
 
       let users = JSON.parse(localStorage.getItem('investmentUsers')) || {};
       let currentUserId = localStorage.getItem('currentUserId') || null;
 
       const PACKAGES = [
-        { id: 'p2500', price: 2500, type: 'regular' },
-        { id: 'p5000', price: 5000, type: 'regular' },
-        { id: 'p9000', price: 9000, type: 'regular' },
-        { id: 'p25000', price: 25000, type: 'regular' },
-        { id: 'p50000', price: 50000, type: 'gold' },
-        { id: 'p100000', price: 100000, type: 'gold' },
+        { id: 'p2500', price: 2500, profit: 200, type: 'regular' },
+        { id: 'p5000', price: 5000, profit: 900, type: 'regular' },
+        { id: 'p9000', price: 9000, profit: 1800, type: 'regular' },
+        { id: 'p25000', price: 25000, profit: 2700, type: 'regular' },
+        { id: 'p50000', price: 50000, profit: 6000, type: 'gold' },
+        { id: 'p100000', price: 100000, profit: 10000, type: 'gold' },
       ];
 
       function showScreen(screenId) {
@@ -448,23 +530,15 @@
         do { id = Math.random().toString().substr(2, 10); } while (users[id]);
         return id;
       }
-
-      function generatePassword() {
-        return Math.random().toString().substr(2, 8);
-      }
+      function generatePassword() { return Math.random().toString().substr(2, 8); }
 
       function updateDashboard() {
         if (!currentUserId || !users[currentUserId]) { logout(); return; }
         const user = users[currentUserId];
         userNameDisplay.textContent = user.fullName;
         userIdDisplay.textContent = user.id;
-        
-        const balance = user.packages.reduce((total, pkgId) => {
-          const pkg = PACKAGES.find(p => p.id === pkgId);
-          return total + (pkg ? pkg.price : 0);
-        }, 0);
-        user.balance = balance; // update user object
-        userBalanceDisplay.textContent = `Rs ${balance.toFixed(2)}`;
+        userBalanceDisplay.textContent = `Rs ${user.balance.toFixed(2)}`;
+        depositGameIdInput.value = user.id;
         renderPackages();
       }
 
@@ -490,13 +564,13 @@
         if (!user) return;
         packagesContainer.innerHTML = '';
         PACKAGES.forEach(pkg => {
-          const isActivated = user.packages.includes(pkg.id);
+          const isActivated = user.packages.find(p => p.id === pkg.id);
           const card = document.createElement('div');
           card.className = `package-card ${pkg.type}`;
           card.innerHTML = `
             <div class="package-info">
               <h3>Package ${pkg.price.toLocaleString()}</h3>
-              <p>Activate to start earning</p>
+              <p class="profit">Profit/Day: Rs ${pkg.profit.toLocaleString()}</p>
             </div>
             <button class="activate-btn" data-pkg-id="${pkg.id}" data-pkg-price="${pkg.price}" ${isActivated ? 'disabled' : ''}>
               ${isActivated ? 'Activated' : 'Activate'}
@@ -504,6 +578,37 @@
           `;
           packagesContainer.appendChild(card);
         });
+      }
+      
+      function calculateAndAddProfit() {
+        if (!currentUserId || !users[currentUserId]) return;
+        const user = users[currentUserId];
+        const now = Date.now();
+        let totalProfit = 0;
+        
+        user.packages.forEach(activePackage => {
+            const packageData = PACKAGES.find(p => p.id === activePackage.id);
+            if (!packageData) return;
+
+            const timeSinceActivation = now - activePackage.activatedAt;
+            const daysSinceActivation = Math.floor(timeSinceActivation / (1000 * 60 * 60 * 24));
+            
+            const profitCyclesPassed = daysSinceActivation;
+            const profitEarned = profitCyclesPassed * packageData.profit;
+            
+            const newProfitToAdd = profitEarned - (activePackage.claimedProfit || 0);
+
+            if(newProfitToAdd > 0){
+                totalProfit += newProfitToAdd;
+                activePackage.claimedProfit = profitEarned;
+            }
+        });
+
+        if (totalProfit > 0) {
+            user.balance += totalProfit;
+            saveData();
+            updateDashboard(); // Update UI
+        }
       }
 
       showLoginBtn.addEventListener('click', () => {
@@ -553,17 +658,27 @@
           const pkgId = e.target.dataset.pkgId;
           const pkgPrice = parseFloat(e.target.dataset.pkgPrice);
           const user = users[currentUserId];
-          if (user && !user.packages.includes(pkgId)) {
-            user.packages.push(pkgId);
-            updateDashboard(); // Recalculate balance and re-render
-            saveData();
-            alert(`Package ${pkgPrice.toLocaleString()} activated successfully!`);
+          if (user) {
+            if (user.balance >= pkgPrice) {
+                user.balance -= pkgPrice;
+                user.packages.push({ id: pkgId, activatedAt: Date.now(), claimedProfit: 0 });
+                updateDashboard();
+                saveData();
+                alert(`Package ${pkgPrice.toLocaleString()} activated successfully!`);
+            } else {
+                alert("Insufficient balance. Please deposit money.");
+            }
           }
         }
+      });
+      
+      uploadSlipBtn.addEventListener('click', () => {
+          alert('Slip upload is a demo feature. Functionality not implemented.');
       });
 
       function init() {
         if (currentUserId && users[currentUserId]) {
+          calculateAndAddProfit(); // Calculate profit on login
           updateDashboard();
           showScreen('dashboardScreen');
         } else {
